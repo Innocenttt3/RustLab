@@ -1,0 +1,1 @@
+Workspace repository for Rust laboratories - UMCS Informatyka semestr 4
