@@ -1,18 +1,14 @@
-mod test;
-
-#[derive(Debug)]
-struct Point {
-    x: i32,
-    y: i32,
-}
 
 fn main() {
-    let p = Point { x: 5, y: 10 };
-
-    // Użycie składni {:?}
-    println!("{:?}", p);
-
-    // Bez użycia składni {:?}
-    println!("{}", p.x);
-    println!("{}", p.y);
+    let  input = 6;
+    let mut result = 1;
+    let mut iterator = 1;
+    loop {
+        result *= iterator;
+        iterator += 1;
+        if iterator == input + 1 {
+            break;
+        }
+    }
+    println!("{}", result)
 }
