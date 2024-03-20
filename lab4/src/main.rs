@@ -26,7 +26,6 @@ fn rzymskie(napis: &str) -> u128 {
             _ => println!("Can't recognize char")
         }
         if previous < current {
-            println!("{}, {}", previous, current - previous);
             result -= previous;
             result += current - previous;
         } else {
@@ -37,8 +36,34 @@ fn rzymskie(napis: &str) -> u128 {
     result
 }
 
+fn co_drugi_znak(napis: &str) -> String {
+    let mut result: String = "".to_string();
+    let mut iterator = 0;
+    for single_letter in napis.chars() {
+        if iterator % 2 == 0 {
+            result.push(single_letter);
+        }
+        iterator += 1;
+    }
+    return result;
+    //xDDDDDDD
+}
 
+fn co_drugi_znak_better(napis: &str) -> String {
+    napis.chars().step_by(2).collect()
+}
+
+fn wizytowka(imie: &str, nazwisko: &str) -> String {
+    let mut result = String::new();
+    if let Some(pierwsza_litera) = imie.chars().next() {
+        let pierwsza_litera_duza = pierwsza_litera.to_uppercase();
+        result.push_str(&pierwsza_litera_duza.to_string()); // Konwersja na String i dodanie do wynikowego ciągu
+    }
+    result.push_str(". "); // Dodanie kropki i spacji
+    result.push_str(nazwisko); // Dodanie nazwiska
+    result // Zwrócenie wynikowego ciągu znaków
+}
 
 fn main() {
-    println!("{}", rzymskie("CCVII"))
+    println!("{}", wizytowka("kamil", "Golawski"));
 }
