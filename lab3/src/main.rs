@@ -35,11 +35,18 @@ fn rand_perm(arr: &mut [i32], seed: &mut i32) {
     }
 }
 
+// fn count_occurance(napis: &str, sign: char) -> i32 {
+//     let mut result = 0;
+//     for i in 0..napis.len() {
+//         if napis == sign {
+//             result += 1;
+//         }
+//     }
+//     result
+// }
+
 fn main() {
-    let mut arr: [i32; 5] = [1, 2, 3, 4, 5];
-    let mut ziarno = 100;
-    rand_perm(&mut arr, &mut ziarno);
-    for i in 0..arr.len() {
-        print!("{} ", arr[i])
-    }
+    let napis = "testowe";
+    let sign = "t";
+    //println!("{}", count_occurance(napis, sign.parse().unwrap()))
 }
