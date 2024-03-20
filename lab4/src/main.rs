@@ -46,7 +46,7 @@ fn co_drugi_znak(napis: &str) -> String {
         iterator += 1;
     }
     return result;
-    //xDDDDDDD
+    //bledne podejscie
 }
 
 fn co_drugi_znak_better(napis: &str) -> String {
@@ -57,11 +57,11 @@ fn wizytowka(imie: &str, nazwisko: &str) -> String {
     let mut result = String::new();
     if let Some(pierwsza_litera) = imie.chars().next() {
         let pierwsza_litera_duza = pierwsza_litera.to_uppercase();
-        result.push_str(&pierwsza_litera_duza.to_string()); // Konwersja na String i dodanie do wynikowego ciągu
+        result.push_str(&pierwsza_litera_duza.to_string());
     }
-    result.push_str(". "); // Dodanie kropki i spacji
-    result.push_str(nazwisko); // Dodanie nazwiska
-    result // Zwrócenie wynikowego ciągu znaków
+    result.push_str(". ");
+    result.push_str(nazwisko);
+    result
 }
 
 fn main() {
