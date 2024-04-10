@@ -46,7 +46,6 @@ fn co_drugi_znak(napis: &str) -> String {
         iterator += 1;
     }
     return result;
-    //bledne podejscie
 }
 
 fn co_drugi_znak_better(napis: &str) -> String {
