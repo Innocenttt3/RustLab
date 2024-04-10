@@ -11,7 +11,6 @@ fn szyfruj(napis: &str, value: usize) -> String {
     finalresult
 }
 
-
 fn wizytowka(imie: &str, nazwisko: &str) -> String {
     let mut result = String::new();
     if let Some(pierwsza_litera) = imie.chars().next() {
@@ -33,16 +32,6 @@ fn dodaj_pisemnie(a: &str, b: &str) -> String {
     suma.to_string()
 }
 
-fn match_test(a: u32) -> String {
-    let mut result = String::new();
-    match a {
-        5 => result = "gang".to_string(),
-        1 => result = "test".to_string(),
-        _ => println!("nie znana liczba!")
-    }
-    result
-}
-
 fn main() {
-    println!("{}", match_test(5));
+    println!("{}", dodaj_pisemnie("15.1", "2100.1"));
 }
