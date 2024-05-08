@@ -1,10 +1,31 @@
-
 struct Review<'a> {
     which_game: &'a Game,
     reviewer: &'a Player,
     status: Status,
     rate: u8,
 }
+
+impl<'a> Review<'a> {
+    fn new(player_index: usize, game_index: usize, games_vec: &'a Vec<Game>, players_vec: &'a Vec<Player>, status: Status, rate: u8) -> Option<Self> {
+        if let Some(player) = players_vec.get(player_index) {
+            if let Some(game) = games_vec.get(game_index) {
+                Some(Review {
+                    which_game: game,
+                    reviewer: player,
+                    status,
+                    rate,
+                })
+            } else {
+                println!("Game index out of range.");
+                None
+            }
+        } else {
+            println!("Player index out of range.");
+            None
+        }
+    }
+}
+
 
 #[derive(Debug)]
 enum Status {
@@ -35,28 +56,9 @@ enum Category {
 }
 
 fn main() {
-    let category = Category::Casual;
+    let player_id = 1;
+    let game_id = 1;
+    let rating = 9;
 
-    let game = Game {
-        id: 1,
-        name: String::from("Example Game"),
-        category,
-    };
 
-    let player = Player {
-        id: 1,
-        name: String::from("John"),
-        surname: String::from("Doe"),
-        age: 25,
-    };
-
-    let review = Review {
-        which_game: &game,
-        reviewer: &player,
-        status: Status::Has,
-        rate: 4,
-    };
-
-    println!("Review of '{}' by {} {}: {:?}", game.name, player.name, player.surname, review.status);
-    println!("Rating: {}", review.rate);
 }
