@@ -17,8 +17,12 @@ fn zamien_syst8_na_syst2(z: &str) -> Option<String> {
             _ => return None,
         }
     }
-    let trimmed_result = result.trim_start_matches('0').to_string();
-    Some(trimmed_result)
+    if result.chars().all(|c| c == '0') {
+        return Some("0".to_string());
+    } else {
+        let trimmed_result = result.trim_start_matches('0').to_string();
+        Some(trimmed_result)
+    }
 }
 
 fn wartosc_syst2(z: &str) -> Option<u8> {
@@ -52,6 +56,13 @@ fn wartosc_syst8(z: &str) -> Option<u8> {
     }
 }
 
+fn wartosc_syst8_better(z: &str) -> Option<u8>{
+    let syst2= zamien_syst8_na_syst2(z)?; // rozpakowanie wartosci bez paniki
+    wartosc_syst2(&syst2)
+}
+
 fn main() {
+    println!("{:?}", zamien_syst8_na_syst2("000"));
+    println!("{:?}", wartosc_syst8("1231"));
     println!("{:?}", wartosc_syst8("123"));
 }
