@@ -61,6 +61,7 @@ fn wartosc_syst8_better(z: &str) -> Option<u8>{
     wartosc_syst2(&syst2)
 }
 
+
 fn main() {
     println!("{:?}", zamien_syst8_na_syst2("000"));
     println!("{:?}", wartosc_syst8("1231"));
