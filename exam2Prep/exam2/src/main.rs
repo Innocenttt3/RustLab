@@ -1,105 +1,100 @@
-fn zamien_syst8_na_syst2(z: &str) -> Option<String>{
-    if z.is_empty() {return None}
-    let mut result = String::new();
-    for single_letter in z.chars(){
-        match single_letter {
-            '0' => result.push_str("000"),
-            '1' => result.push_str("001"),
-            '2' => result.push_str("010"),
-            '3' => result.push_str("011"),
-            '4' => result.push_str("100"),
-            '5' => result.push_str("101"),
-            '6' => result.push_str("110"),
-            '7' => result.push_str("111"),
-            _ => return None,
+enum Card_type {
+    Pik,
+    Kier,
+    Karo,
+    Trefl
+}
+
+enum File_error {
+    No_error,
+    Wrong_file_extension,
+    File_not_found(String),
+    Too_large_file(u64, u64)
+}
+
+impl File_error {
+    fn show_error(&self) {
+        match self {
+            File_error::No_error => println!("No issues were found"),
+            File_error::Wrong_file_extension => println!("Wrong file extension"),
+            File_error::File_not_found(file_name) => println!("File: {} was not found in that directory", file_name),
+            File_error::Too_large_file(actual_size, min_size) => println!("File size: {} is over limit: {}", actual_size, min_size)
         }
-
     }
-    let trimmed_result = result.trim_start_matches('0');
-    return Some(trimmed_result.to_string())
-
 }
 
-fn wartosc_syst2(z: &str) -> Option<u8> {
-    let mut result = 0;
-    let mut index = 0;
-    if z.len() > 8 {return None}
-    else {
-        for single_number in z.chars().rev() {
-            match single_number {
-                '0' => (),
-                '1' => result += 2_u8.pow(index),
-                _ => return None,
-            }
-            index += 1;
+#[derive(Debug)]
+struct RandGen {
+    seed: i32
+}
+
+impl RandGen {
+    fn new(new_seed: i32) -> RandGen { RandGen { seed: new_seed } }
+
+    fn gen_range(&mut self, start: i32, end: i32) -> i32 {
+        self.seed = (75 * self.seed + 74) % (2_i32.pow(16) + 1);
+        self.seed % (end - start + 1) + start
+    }
+
+    fn pokaz_komunikat(&self, value: i32, start: i32, end: i32) {
+        println!("Wylosowana liczba: {}", value);
+        println!("Czy wartość jest większa lub równa {}? {}", start, value >= start);
+        println!("Czy wartość jest mniejsza lub równa {}? {}", end, value <= end);
+    }
+}
+
+#[derive(Debug)]
+struct Urna {
+    letters: Vec<char>,
+    generator: RandGen
+}
+
+impl Urna {
+    fn new(generator: RandGen) -> Urna {
+        Urna { letters: Vec::new(), generator }
+    }
+
+    fn doloz(&mut self, letter: char) {
+        self.letters.push(letter);
+    }
+
+    fn losuj_z_us(&mut self) -> Option<char> {
+        if self.letters.is_empty() {
+            None
+        } else {
+            let idx = self.generator.gen_range(0, self.letters.len() as i32 - 1) as usize;
+            Some(self.letters[idx])
         }
-        return Some(result)}
-}
-
-fn wartosc_syst8(z: &str) -> Option<u8> {
-    if let Some(result_syst2) = zamien_syst8_na_syst2(z) {
-            if let Some(final_result) = wartosc_syst2(&result_syst2) {
-                return Some(final_result)
-            } else {
-                return None
-            }
-    } else {
-        return None
-    }
-}
-
-fn wartosc_cyfry(c: char) -> Result<u8, String> {
-    match c {
-        '0' => Ok(0),
-        '1' => Ok(1),
-        '2' => Ok(2),
-        '3' => Ok(3),
-        '4' => Ok(4),
-        '5' => Ok(5),
-        '6' => Ok(6),
-        '7' => Ok(7),
-        '8' => Ok(8),
-        '9' => Ok(9),
-        _ => Err(format!("'{}' is not a digit.", c)),
-    }
-}
-
-
-
-struct RGB {
-    r: u8,
-    g: u8,
-    b: u8,
-}
-
-impl RGB {
-    fn from_3u8(red: u8, green: u8, blue: u8) -> RGB {
-        RGB { r: red, g: green, b: blue }
     }
 
-    fn from_3percent(red: f32, green: f32, blue: f32) -> Option<RGB> {
-        if red < 0.0 || red > 100.0 || green < 0.0 || green > 100.0 || blue < 0.0 || blue > 100.0 {
-            return None;
+    fn losuj_bez_us(&mut self) -> Option<char> {
+        if self.letters.is_empty() {
+            None
+        } else {
+            let idx = self.generator.gen_range(0, self.letters.len() as i32 - 1) as usize;
+            Some(self.letters.remove(idx))
         }
-        let r = ((red / 100.0) * 255.0) as u8;
-        let g = ((green / 100.0) * 255.0) as u8;
-        let b = ((blue / 100.0) * 255.0) as u8;
-        Some(RGB { r, g, b })
-    }
-
-    fn black() -> RGB {
-        RGB {r: 0, g: 0, b: 0}
     }
 }
-
-
-
 
 fn main() {
-    let color = RGB::from_3u8(255, 100, 50);
-    println!("RGB({}, {}, {})", color.r, color.g, color.b);
-    let szary2 = RGB::from_3percent(50.0, 50.0, 50.0).unwrap();
-    println!("RGB({}, {}, {})", szary2.r, szary2.g, szary2.b);
-    let black = RGB::black();
-    println!("RGB({}, {}, {})", black.r, black.g, black.b);
+    let mut urna = Urna::new(RandGen::new(123));
+
+    let a: Option<char> = urna.losuj_z_us();
+    println!("{}", a.is_none());
+    let a: Option<char> = urna.losuj_bez_us();
+    println!("{}", a.is_none());
+
+    urna.doloz('a');
+    urna.doloz('b');
+    urna.doloz('c');
+    urna.doloz('d');
+
+    let b: Option<char> = urna.losuj_z_us();
+    println!("{:?}", b);
+
+    let c: Option<char> = urna.losuj_bez_us();
+    println!("{:?}", c);
+
+    println!("{:?}", urna); 
 }
