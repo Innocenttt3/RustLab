@@ -38,7 +38,7 @@ fn wartosc_syst2(z: &str) -> Option<u8> {
 
 fn wartosc_syst8(z: &str) -> Option<u8> {
     if let Some(result_syst2) = zamien_syst8_na_syst2(z) {
-            if (let Some(final_result) = wartosc_syst2(&result_syst2)) {
+            if let Some(final_result) = wartosc_syst2(&result_syst2) {
                 return Some(final_result)
             } else {
                 return None
@@ -64,23 +64,42 @@ fn wartosc_cyfry(c: char) -> Result<u8, String> {
     }
 }
 
-fn dodaj_pisemnie(a; &str, b: &str) -> Result<String, String>{
-    let mut a = 0;
-    let mut b = 0;
-    let mut tmp = 0;
-    for single_number in a.chars(){
-        if let Some(tmp) = wartosc_cyfry(single_number){
-            a += tmp;
-        } else {return Err(format!("'{}' is not a digit.", c))}
 
+
+struct RGB {
+    r: u8,
+    g: u8,
+    b: u8,
+}
+
+impl RGB {
+    fn from_3u8(red: u8, green: u8, blue: u8) -> RGB {
+        RGB { r: red, g: green, b: blue }
+    }
+
+    fn from_3percent(red: f32, green: f32, blue: f32) -> Option<RGB> {
+        if red < 0.0 || red > 100.0 || green < 0.0 || green > 100.0 || blue < 0.0 || blue > 100.0 {
+            return None;
+        }
+        let r = ((red / 100.0) * 255.0) as u8;
+        let g = ((green / 100.0) * 255.0) as u8;
+        let b = ((blue / 100.0) * 255.0) as u8;
+        Some(RGB { r, g, b })
+    }
+
+    fn black() -> RGB {
+        RGB {r: 0, g: 0, b: 0}
     }
 }
 
-fn main(){
-    if let Some(result) = wartosc_syst8("111"){
-        println!("Number value: {}", result);
-    } else {
-        println!("Wrong input");
-    }
 
+
+
+fn main() {
+    let color = RGB::from_3u8(255, 100, 50);
+    println!("RGB({}, {}, {})", color.r, color.g, color.b);
+    let szary2 = RGB::from_3percent(50.0, 50.0, 50.0).unwrap();
+    println!("RGB({}, {}, {})", szary2.r, szary2.g, szary2.b);
+    let black = RGB::black();
+    println!("RGB({}, {}, {})", black.r, black.g, black.b);
 }
